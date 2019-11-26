@@ -97,6 +97,48 @@
       getIndex (item) {
         return item.index;
       },
+      changeInputBoxes () {
+        this.changeBoxes(this.boxesComponent, this.boxesElements.length);
+      },
+      changeBoxes (newNumberBoxes, oldNumberBoxes=DEFAULT_SELECTED) {
+        this.changeBoxesByObjects(newNumberBoxes, oldNumberBoxes);
+      },
+      changeBoxesByObjects (newNumberBoxes, oldNumberBoxes) {
+        if (newNumberBoxes > 0) {
+          if (newNumberBoxes > oldNumberBoxes) {
+            this.boxesComponent = newNumberBoxes;
+            this.addBoxesByObjects();
+          } else if (newNumberBoxes < oldNumberBoxes) {
+            this.boxesComponent = newNumberBoxes;
+            this.removeBoxesByObjects();
+          }
+        }
+      },
+      addBoxesByObjects () {
+        const numberCreatedBoxes = this.boxesElements.length;
+        const numberNewBoxes = this.boxesComponent - numberCreatedBoxes;
+
+        for (let i = 0; i < numberNewBoxes; i++) {
+          const newBox = this.getBoxObject(numberCreatedBoxes + 1, false);
+
+          this.boxesElements.push(newBox);
+        }
+      },
+      removeBoxesByObjects () {
+        let positionFrog = this.getSelectionByBoxes();
+        const numberCreatedBoxes = this.boxesElements.length;
+        const numberBoxes = this.boxesComponent;
+
+        if (positionFrog >= numberBoxes) {
+          positionFrog = numberBoxes;
+          this.selectedComponent = positionFrog;
+          this.boxesElements[positionFrog-1].selected = true;
+        }
+
+        for (let i = numberCreatedBoxes-1; i >= numberBoxes; i--) {
+          this.boxesElements.pop();
+        }
+      },
       changeInputSelection() {
         // console.log('changeInputSelection # selectedComponent new : ', this.selectedComponent);
         // console.log('changeInputSelection # selectedComponent prev : ', this.getSelectionByBoxes());
