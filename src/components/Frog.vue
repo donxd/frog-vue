@@ -1,6 +1,28 @@
 <template>
   <div id="frog">
-    Hi frog - {{boxesState}}!
+    Hi frog - {{boxesComponent}}!
+    <div v-if="configComponent" class='table'>
+      <div class='row'>
+        <div class='cell'>
+          <label for="nboxes">Número de cajas: &nbsp;</label>
+        </div>
+        <div class='cell'>
+          <input type="number" min="1" 
+            @change="changeInputBoxes()"
+            v-model=boxesComponent>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='cell'>
+          <label for="pfrog">Posición rana: </label>
+        </div>
+        <div class='cell'>
+          <input type="number" min="1" 
+            @change="changeInputSelection()"
+            v-model=selectedComponent>
+        </div>
+      </div>
+    </div>
     <table id="elements">
       <tr>
         <td 
@@ -35,18 +57,22 @@
         required: false,
         default: DEFAULT_SELECTED
       },
-      styleSelected: {
-        type: String
+      config: {
+        type: Boolean,
+        required: false,
+        default: DEFAULT_CONFIG
       }
     },
     data() {
       return {
-        boxesState: 0,
+        boxesComponent: 0,
         boxesElements: []
       };
     },
     created() {
-      this.boxesState = this.boxes;
+      this.boxesComponent = this.boxes;
+      this.selectedComponent = this.selected;
+      this.configComponent = this.config;
       this.generateObjectBoxes();
     },
     methods: {
@@ -70,6 +96,28 @@
       },
       getIndex (item) {
         return item.index;
+      },
+      changeInputSelection() {
+        // console.log('changeInputSelection # selectedComponent new : ', this.selectedComponent);
+        // console.log('changeInputSelection # selectedComponent prev : ', this.getSelectionByBoxes());
+        this.changeSelected(this.selectedComponent, this.getSelectionByBoxes());
+      },
+      changeSelected (newPosition, oldPosition=DEFAULT_BOXES) {
+        this.changeSelectedByObjects(newPosition, oldPosition);
+      },
+      changeSelectedByObjects (newPosition, oldPosition) {
+        if (this.boxesElements && this.boxesElements.length && oldPosition > -1){
+          // const positionFrog = this.getPositionFrogAdvanced();
+          const positionFrog = oldPosition;
+          const newPositionSelection = newPosition <= this.boxesElements.length ? newPosition : 1;
+
+          this.selectedComponent = newPositionSelection;
+          this.boxesElements[positionFrog-1].selected = false;
+          this.boxesElements[newPositionSelection-1].selected = true;
+        }
+      },
+      getSelectionByBoxes() {
+        for (let box of this.boxesElements) if (box.selected) return box.index;
       },
       jumpFrogAdv (boxSelected) {
         if (boxSelected.selected) {

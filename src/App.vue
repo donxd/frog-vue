@@ -2,6 +2,9 @@
   <div id="app">
     <Frog/>
     <Frog v-bind:boxes="7" v-bind:selected="4"/>
+    <Frog v-bind:config="true" v-bind:selected="2"/>
+    <Frog v-bind:boxes="10"/>
+    <Frog v-bind:boxes="7" v-bind:selected="4"/>
     <!-- <HelloWorld msg="asfdasdf" /> -->
   </div>
 </template>
