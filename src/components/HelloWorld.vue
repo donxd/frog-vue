@@ -1,7 +1,10 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
+    <ul>
+      <li v-for="(el, index) in lista" v-bind:key="index" @click="funcionn()">{{el}}</li>
+    </ul>
+    <!-- <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
@@ -26,7 +29,7 @@
       <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
@@ -35,6 +38,17 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      lista: [1,2,3,4,4]
+    };
+  },
+  methods: {
+    funcionn () {
+      // this.lista.push(88);
+      this.lista=this.lista.map(el => el*2);
+    }
   }
 }
 </script>

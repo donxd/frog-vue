@@ -1,19 +1,22 @@
 <template>
   <div id="frog">
-    Hi frog - {{boxes}}!
+    Hi frog - {{boxesState}}!
     <table id="elements">
       <tr>
-          <!-- :class="{CSS_STYLE_FROG: box.selected===true}" -->
         <td 
-          v-for="(box, index) in boxesElements" 
+          v-for="(box,index) in boxesElements" 
+          @click="jumpFrogAdv(box)"
           :class="getBoxClass(box)"
-          :key="`box-${index}`">{{getIndex(box)}}</td>
+          :key="`${index}`"
+          >{{getIndex(box)}}</td>
       </tr>
     </table>
   </div>
 </template>
 
 <script>
+  // import Vue from 'vue';
+
   const DEFAULT_BOXES = 5;
   const DEFAULT_SELECTED = 1;
   const DEFAULT_CONFIG = false;
@@ -37,13 +40,13 @@
       }
     },
     data() {
-      return {}
+      return {
+        boxesState: 0,
+        boxesElements: []
+      };
     },
     created() {
-      // console.log('initialize Frog!');
-      // console.log('boxes : ', this.boxes);
-      // console.log('boxes : ', this.selected);
-      // this.selectionStyle = 'frog';
+      this.boxesState = this.boxes;
       this.generateObjectBoxes();
     },
     methods: {
@@ -51,7 +54,6 @@
         this.boxesElements = [];
         for (let i = 0; i < this.boxes; i++) {
           const box = this.getNewBoxObject(i+1, this.selected);
-
           this.boxesElements.push(box);
         }
       },
@@ -68,6 +70,17 @@
       },
       getIndex (item) {
         return item.index;
+      },
+      jumpFrogAdv (boxSelected) {
+        if (boxSelected.selected) {
+          const newBoxSelection = boxSelected.index < this.boxesElements.length ?
+            this.boxesElements[ boxSelected.index ] : this.boxesElements[ 0 ];
+
+          this.boxesElements[boxSelected.index-1].selected = false;
+          this.boxesElements[newBoxSelection.index-1].selected = true;
+
+          this.selectedComponent = newBoxSelection.index;
+        }
       },
       getBoxClass (item) {
         const resolve = {};
