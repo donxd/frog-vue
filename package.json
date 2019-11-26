@@ -2,9 +2,12 @@
   "name": "frog-vue",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://donxd.github.io/frog-vue",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -18,6 +21,7 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "gh-pages": "^2.1.1",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
